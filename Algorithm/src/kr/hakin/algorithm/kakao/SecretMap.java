@@ -1,4 +1,4 @@
-package kr.hakin.algorism.kakao;
+package kr.hakin.algorithm.kakao;
 
 import java.io.BufferedReader;
 import java.io.IOException;
