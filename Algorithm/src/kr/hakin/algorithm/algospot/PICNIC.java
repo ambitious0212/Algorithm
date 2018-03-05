@@ -12,7 +12,7 @@ public class PICNIC {
 	private int numOfStudents;
 	private int numOfPair;
 	private int countOfGroup;
-	
+
 	public PICNIC(int numOfStudents, int numOfPair, String[] pairInfo) {
 		this.numOfStudents = numOfStudents;
 		this.numOfPair = numOfPair;
@@ -28,37 +28,41 @@ public class PICNIC {
 			mapOfPairInfo.get(Integer.parseInt(pairInfo[(2 * j) + 1])).add(Integer.parseInt(pairInfo[2 * j]));
 		}
 
-		/*for (Integer key : mapOfPairInfo.keySet()) {
-			System.out.println(mapOfPairInfo.get(key));
-			
-		}
-		*/
-		isMatching[0] = true;
-		makeGroup(0, numOfStudents - 1, "0");
+		/*
+		 * for (Integer key : mapOfPairInfo.keySet()) {
+		 * System.out.println(mapOfPairInfo.get(key));
+		 * 
+		 * }
+		 */
+		makeGroup();
 		System.out.println(countOfGroup);
-		System.out.println("========================");
-	}
-	
-	public void makeGroup(int targetStudent, int remainStudent, String groupText) {
-		//System.out.println(remainStudent);
-		if(remainStudent < 1) {
-			countOfGroup++;
-			System.out.println(groupText);
-			return;
-		}
-		for(int i = 0; i < numOfStudents; i++) {
-			if(isMatching[i]) {
-				continue;
-			} if(!mapOfPairInfo.get(targetStudent).contains(i)) {
-				continue;
-			}
-			
-			isMatching[i] = true;
-			makeGroup(i, remainStudent - 1, groupText + i);
-			isMatching[i] = false;
-		}
 	}
 
+	public void makeGroup() {
+		int targetStudent = -1;
+
+		for (int i = 0; i < numOfStudents; i++) {
+			if(!isMatching[i]) {
+				targetStudent = i;
+				break;
+			}
+		}
+		
+		if(targetStudent == -1) {
+			countOfGroup++;
+			return;
+		}
+		
+		for (int i = targetStudent + 1; i < numOfStudents; i++) {
+			if(!isMatching[i] && mapOfPairInfo.get(targetStudent).contains(i)) {
+				isMatching[targetStudent] = true;
+				isMatching[i] = true;
+				makeGroup();
+				isMatching[i] = false;
+				isMatching[targetStudent] = false;
+			}
+		}
+	}
 
 	public static void main(String[] args) {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
